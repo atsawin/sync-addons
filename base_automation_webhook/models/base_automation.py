@@ -2,6 +2,8 @@
 # License MIT (https://opensource.org/licenses/MIT).
 
 import requests
+import hashlib
+import time
 
 # The file name is incorrect and should be called ir_actions_server.py instead
 from odoo import api, models
@@ -18,5 +20,14 @@ class IrActionsServer(models.Model):
         def make_request(*args, **kwargs):
             return requests.request(*args, **kwargs)
 
+        def sha256(data):
+            return hashlib.sha256(data)
+
+        def timestamp():
+            return time.time()
+
         eval_context["make_request"] = make_request
+        eval_context["sha256"] = sha256
+        eval_context["timestamp"] = timestamp
+
         return eval_context
